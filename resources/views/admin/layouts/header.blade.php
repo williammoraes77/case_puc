@@ -99,7 +99,10 @@
                     <a href="{{route('dashboard')}}"  class="collapsible-header"><i class="material-icons">dashboard</i><span class="hide-menu"> Dashboard</span></a>
                 </li>
                 <li>
-                    <a href="{{route('search')}}"  class="collapsible-header"><i class="material-icons">library_add</i><span class="hide-menu"> Assinatura</span></a>
+                    <a href="{{route('search')}}"  class="collapsible-header"><i class="material-icons">library_add</i><span class="hide-menu"> Assinaturas</span></a>
+                </li>
+                <li>
+                    <a href="{{route('logs')}}"  class="collapsible-header"><i class="material-icons">event_note</i><span class="hide-menu"> Logs</span></a>
                 </li>
 
             </ul>

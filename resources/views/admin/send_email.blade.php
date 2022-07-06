@@ -35,9 +35,9 @@ Home -
                     <div class="col s12">
                             <div class="card">
                                 <div class="card-content wizard-content">
-                                    <h5 class="card-title">Buscar CPF</h5>
+                                    <h5 class="card-title">Cadastrar Email</h5>
                                     <!-- <h6 class="card-subtitle">See full documentation here on <a href="http://www.jquery-steps.com" target="_blank">offical website</a>.</h6> -->
-                                    <form method="POST" action="{{URL::action('App\Http\Controllers\SignatureController@findDocument')}}">
+                                    <form method="POST" action="{{URL::action('App\Http\Controllers\SignatureController@sendEmail')}}">
                                         {{ csrf_field() }}
                                         <section class="align-items-center">
                                             <div class="row align-items-center">
@@ -48,7 +48,7 @@ Home -
                                                             <div class="row" style="margin: 0 auto">
                                                             <div class="card-content center-align align-items-center" style="margin: 0 auto">
                                                                 <div class="center-align">
-                                                                    <h3 class="blue-text">1.º</h3>
+                                                                    <h3 class="blue-text">3.º</h3>
                                                                     <h5 class="blue-text">Passo</h5>
                                                                 </div>
                                                             </div>
@@ -56,17 +56,20 @@ Home -
                                                         <!-- </div> -->
 
                                                         <!-- <h2 class="center-align">teste</h2> -->
-                                                        <label class="center-align" for="firstName1"><h4>CPF:</h4></label>
-                                                            <input class="center-align" type="text" name="document_number" id="firstName1" style="float:right" placeholder="digite o numero do cpf" required>
+                                                        <label class="center-align" for="firstName1"><h4>Email:</h4></label>
+                                                            <input class="center-align" type="email" name="email" id="firstName1" style="float:right" placeholder="digite do email" required>
 
                                                         </div>
+                                                        @foreach($signatures as $signature)
+                                                            <input type="hidden" name="sigs[]" id="{{ $signature->id }}" value="{{ $signature->id }}" />
+                                                        @endforeach
 
 
                                                 </div>
                                                 <div class="row" style="">
                                                     <button class="btn-large blue accent-4 m-r-20" onclick="event.preventDefault();
                                                             this.closest('form').submit();" style="float:right">
-                                                        Buscar
+                                                        Registar assinatura
                                                     </button>
                                                 </div>
 

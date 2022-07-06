@@ -3,7 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Signature;
+use App\Models\School;
+use App\Models\Course;
+use App\Models\Log;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use DB;
 
 class SignatureController extends Controller
 {
@@ -18,20 +23,63 @@ class SignatureController extends Controller
      */
     public function index()
     {
-        // return view('admin.signatures');
+
+        $signature_pending = Signature::where('status', 0)->count();
+        return view('admin.home', compact('signature_pending'));
     }
 
-    public function findDocument(Request $request)
+    public function dashboard()
     {
 
-        $signatures = Signature::where('student_document', $request->document_number)->where('status', 0)->get();
-        $signatures_amount = Signature::where('student_document', $request->document_number)->where('status', 0)->count();
-        if(!isset($signatures[0])){
-            return redirect()->back()->with('danger', 'CPF não possui documentos pendentes!');
+        $schools = School::all();
+
+        $schools_array = [];
+        foreach($schools as $item){
+            $signature_array[$item->name]['pending'] = [];
+        }
+        // dd($signature_array);
+
+        foreach($schools as $school){
+            $signatures_total = Signature::where('school_id', $school->id)->count();
+            $signatures_pending = Signature::where('status', 0)->where('school_id', $school->id)->count();
+            $signatures_signed = Signature::where('status', 1)->where('school_id', $school->id)->count();
+            // array_push($signature_array[$school->name]['pending'], $signatures);
+
+            $signature_array[$school->name]['name'] = $school->name;
+            $signature_array[$school->name]['total'] = $signatures_total;
+            $signature_array[$school->name]['pending'] = $signatures_pending;
+            $signature_array[$school->name]['signed'] = $signatures_signed;
+
         }
 
-        // dd($signatures_amount);
-        return view('admin.signatures', compact('signatures', 'signatures_amount'));
+        return view('admin.dashboard', compact('schools', 'signature_array'));
+    }
+
+    public function dashboardPerSchool($id)
+    {
+
+        $courses = Course::where('school_id', $id)->get();
+        $title = School::find($id)->name;
+        $signature_array = [];
+
+        $teste;
+        foreach($courses as $item){
+            $signature_array[$item->name]['pending'] = [];
+        }
+
+        foreach($courses as $course){
+            $signatures_total = Signature::where('school_id', $course->school_id)->where('course_id', $course->id)->count();
+            $signatures_pending = Signature::where('status', 0)->where('school_id', $course->school_id)->where('course_id', $course->id)->count();
+            $signatures_signed = Signature::where('status', 1)->where('school_id', $course->school_id)->where('course_id', $course->id)->count();
+            // dd($signatures_signed);
+            $signature_array[$course->name]['name'] = $course->name;
+            $signature_array[$course->name]['total'] = $signatures_total;
+            $signature_array[$course->name]['pending'] = $signatures_pending;
+            $signature_array[$course->name]['signed'] = $signatures_signed;
+
+        }
+
+        return view('admin.dashboard_school', compact('title', 'courses', 'signature_array'));
     }
 
     /**
@@ -98,5 +146,77 @@ class SignatureController extends Controller
     public function destroy(Signature $signature)
     {
         //
+    }
+
+    public function findDocument(Request $request)
+    {
+
+        $signatures = Signature::where('student_document', $request->document_number)->get();
+        $signatures_pending = Signature::where('student_document', $request->document_number)->where('status', 0)->get();
+        $signatures_amount = Signature::where('student_document', $request->document_number)->where('status', 0)->count();
+        if(!isset($signatures[0])){
+            return redirect()->back()->with('danger', 'CPF não possui documentos pendentes!');
+        }
+
+        // dd($signatures_amount);
+        return view('admin.signatures', compact('signatures', 'signatures_amount', 'signatures_pending'));
+    }
+
+    public function checkPending(Request $request)
+    {
+
+        if(!$request->itens){
+            return redirect()->back();
+            return View::make('admin.search')->with('danger', 'CPF não possui documentos pendentes!');
+            return redirect()->back()->with('danger', 'Nenhum documento selecionado!');
+        }
+        $signatures = Signature::whereIn('id', $request->itens)->get();
+        $ids = [];
+        foreach($signatures as $signature){
+            array_push($ids, $signature->id);
+        }
+        // $teste = $request->itens;
+        // dd($ids);
+        return view('admin.send_email', compact('signatures', 'ids'));
+    }
+
+    public function sendEmail(Request $request)
+    {
+        if( !$request->email ||  $request->email == ''){
+
+            return redirect('/search')->with('danger', 'Erro por falta de cadastro de email');;
+
+        }
+
+        if(!$request->sigs || !$request->email){
+            return redirect()->back();
+            return View::make('admin.search')->with('danger', 'CPF não possui documentos pendentes!');
+            return redirect()->back()->with('danger', 'Nenhum documento selecionado!');
+        }
+
+        Signature::whereIn('id', $request->sigs)->update([
+            'status' => 1,
+            'student_email' => $request->email,
+        ]);
+
+        $sigs = Signature::whereIn('id', $request->sigs)->get();
+
+        foreach($sigs as $sig){
+            Log::create([
+                'user_id' => Auth::id(),
+                'signature_id' => $sig->id,
+                'student_email' => $request->email
+            ]);
+        }
+
+        // FUNCAO ENVIAR EMAIL
+
+
+        $signatures = Signature::whereIn('id', $request->sigs)->get();
+        $signatures_count = Signature::whereIn('id', $request->sigs)->count();
+        $email = $request->email;
+
+
+        return view('admin.signature_success', compact('signatures', 'signatures_count', 'email'));
     }
 }

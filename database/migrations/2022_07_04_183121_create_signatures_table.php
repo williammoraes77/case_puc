@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('student_name');
             $table->string('student_document');
-            $table->string('student_email');
+            $table->string('student_email')->nullable();
             $table->unsignedBigInteger('course_id');
             $table->foreign('course_id')->references('id')->on('courses');
             $table->string('period');
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->integer('status')->default(0);
             $table->timestamps();
         });
+
+
     }
 
     /**

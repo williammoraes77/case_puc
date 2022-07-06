@@ -17,6 +17,7 @@
     <link href="/assets/theme/assets/libs/jquery-steps/jquery.steps.css" rel="stylesheet">
     <link href="/assets/theme/assets/libs/jquery-steps/steps.css" rel="stylesheet">
     <link href="/assets/theme/assets/libs/toastr/build/toastr.min.css" rel="stylesheet">
+    <link href="/assets/theme/assets/extra-libs/prism/prism.css" rel="stylesheet">
 
     @yield('styles')
 

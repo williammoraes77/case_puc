@@ -17,13 +17,13 @@ Route::get('/', function () {
     return view('auth.login');
 });
 
-Route::get('/home', function () {
-    return view('admin.home');
-})->middleware(['auth'])->name('home');
+// Route::get('/home', function () {
+//     return view('admin.home');
+// })->middleware(['auth'])->name('home');
 
-Route::get('/dashboard', function () {
-    return view('admin.dashboard');
-})->middleware(['auth'])->name('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('admin.dashboard');
+// })->middleware(['auth'])->name('dashboard');
 
 Route::get('/search', function () {
     return view('admin.search');
@@ -38,7 +38,16 @@ Route::get('/search', function () {
 Route::group(['middleware' => ['auth']], function () {
 
 	# Home
-	Route::post('/signatures', 'App\Http\Controllers\SignatureController@findDocument')->name('signatures');
+	Route::get('/home', 'App\Http\Controllers\SignatureController@index')->name('home');
+
+	Route::get('/dashboard', 'App\Http\Controllers\SignatureController@dashboard')->name('dashboard');
+	Route::get('/dashboard/school/{id}', 'App\Http\Controllers\SignatureController@dashboardPerSchool')->name('dashboard_school');
+
+	Route::post('/search/signatures', 'App\Http\Controllers\SignatureController@findDocument')->name('signatures');
+	Route::post('/search/signatures/check', 'App\Http\Controllers\SignatureController@checkPending')->name('check-pending');
+	Route::post('/signatures/send-email', 'App\Http\Controllers\SignatureController@sendEmail')->name('send-email');
+
+    Route::get('/logs', 'App\Http\Controllers\LogController@index')->name('logs');
 });
 
 

@@ -18,6 +18,19 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+
+        $schools = array(
+            array('name' => 'BELAS_ARTES'),
+            array('name' => 'CIÊNCIAS_DA_VIDA'),
+            array('name' => 'DIREITO'),
+            array('name' => 'EDUCAÇÃO_E_HUMANIDADES'),
+            array('name' => 'MEDICINA'),
+            array('name' => 'NEGÓCIOS'),
+            array('name' => 'POLITÉCNICA'),
+        );
+
+        DB::table('schools')->insert( $schools );
     }
 
     /**
