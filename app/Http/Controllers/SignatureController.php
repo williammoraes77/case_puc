@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Models\Signature;
 use App\Models\School;
 use App\Models\Course;
 use App\Models\Log;
+use App\Mail\SendMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use DB;
+use Illuminate\Support\Facades\Mail;
+
 
 class SignatureController extends Controller
 {
@@ -25,7 +28,8 @@ class SignatureController extends Controller
     {
 
         $signature_pending = Signature::where('status', 0)->count();
-        return view('admin.home', compact('signature_pending'));
+        $signature_signed = Signature::where('status', 1)->count();
+        return view('admin.home', compact('signature_pending', 'signature_signed'));
     }
 
     public function dashboard()
@@ -151,9 +155,19 @@ class SignatureController extends Controller
     public function findDocument(Request $request)
     {
 
-        $signatures = Signature::where('student_document', $request->document_number)->get();
-        $signatures_pending = Signature::where('student_document', $request->document_number)->where('status', 0)->get();
-        $signatures_amount = Signature::where('student_document', $request->document_number)->where('status', 0)->count();
+        $is_cpf = $request->document_number;
+
+        if(is_numeric($is_cpf)){
+            $signatures = Signature::where('student_document', $request->document_number)->get();
+            $signatures_pending = Signature::where('student_document', $request->document_number)->where('status', 0)->get();
+            $signatures_amount = Signature::where('student_document', $request->document_number)->where('status', 0)->count();
+        }else{
+            $signatures = Signature::where('student_name', $request->document_number)->get();
+            $signatures_pending = Signature::where('student_name', $request->document_number)->where('status', 0)->get();
+            $signatures_amount = Signature::where('student_name', $request->document_number)->where('status', 0)->count();
+        }
+
+
         if(!isset($signatures[0])){
             return redirect()->back()->with('danger', 'CPF não possui documentos pendentes!');
         }
@@ -209,12 +223,23 @@ class SignatureController extends Controller
             ]);
         }
 
-        // FUNCAO ENVIAR EMAIL
+
 
 
         $signatures = Signature::whereIn('id', $request->sigs)->get();
         $signatures_count = Signature::whereIn('id', $request->sigs)->count();
         $email = $request->email;
+
+          // FUNCAO ENVIAR EMAIL
+        foreach($signatures as $item){
+
+            try {
+                Mail::to($email)->send(new SendMail($item->student_name, $item->course->name));
+            } catch (\Exception $e) {
+                // Get error here
+            }
+        }
+
 
 
         return view('admin.signature_success', compact('signatures', 'signatures_count', 'email'));

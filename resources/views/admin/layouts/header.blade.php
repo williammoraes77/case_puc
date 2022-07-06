@@ -9,12 +9,11 @@
                     <!-- ============================================================== -->
                     <a href="javascript:void(0)" class="brand-logo">
                         <span class="icon">
-                            <img class="light-logo" src="/assets/theme/assets/images/logo-light-icon.png">
-                            <img class="dark-logo" src="/assets/theme/assets/images/logo-icon.png">
+                            <img class="light-logo" src="/assets/theme/assets/images/puc.jpeg" style="max-width: 60px;">
+                            <img class="dark-logo" src="/assets/theme/assets/images/puc.jpeg">
                         </span>
                         <span class="text">
-                            <img class="light-logo" src="/assets/theme/assets/images/logo-light-text.png">
-                            <img class="dark-logo" src="/assets/theme/assets/images/logo-text.png">
+
                         </span>
                     </a>
                     <!-- ============================================================== -->

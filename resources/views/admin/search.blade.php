@@ -35,7 +35,7 @@ Home -
                     <div class="col s12">
                             <div class="card">
                                 <div class="card-content wizard-content">
-                                    <h5 class="card-title">Buscar CPF</h5>
+                                    <h5 class="card-title">Buscar documentos</h5>
                                     <!-- <h6 class="card-subtitle">See full documentation here on <a href="http://www.jquery-steps.com" target="_blank">offical website</a>.</h6> -->
                                     <form method="POST" action="{{URL::action('App\Http\Controllers\SignatureController@findDocument')}}">
                                         {{ csrf_field() }}
@@ -56,8 +56,8 @@ Home -
                                                         <!-- </div> -->
 
                                                         <!-- <h2 class="center-align">teste</h2> -->
-                                                        <label class="center-align" for="firstName1"><h4>CPF:</h4></label>
-                                                            <input class="center-align" type="text" name="document_number" id="firstName1" style="float:right" placeholder="digite o numero do cpf" required>
+                                                        <label class="center-align" for="firstName1"><h4>CPF/NOME</h4></label>
+                                                            <input class="center-align" type="text" name="document_number" id="firstName1" style="float:right" placeholder="digite o numero do cpf ou o nome do aluno" required>
 
                                                         </div>
 

@@ -33,27 +33,40 @@ Home -
                                     <div class="row">
                                         <!-- column -->
                                         <div class="col s12">
-                                            <a href="{{route('dashboard')}}" class="col l6 m6 s12">
+                                            <a href="{{route('dashboard')}}" class="col l4 m4 s12">
                                                 <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
                                                     <div class="card-content center-align">
                                                         <div>
-                                                            <span class="blue-text display-6"><i class="ti-bar-chart-alt"></i></span>
+                                                            <span class="display-6" style="color: #d98305!important"><i class="ti-bar-chart-alt"></i></span>
                                                         </div>
                                                         <div>
                                                             <h4>{{$signature_pending}}</h4>
-                                                            <h4 class="">Total de documentos Pendentes</h4>
+                                                            <h4 class="">Documentos Pendentes</h4>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </a>
-                                            <a href="{{route('search')}}" class="col l6 m6 s12">
+                                            <a href="{{route('dashboard')}}" class="col l4 m4 s12">
+                                                <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
+                                                    <div class="card-content center-align">
+                                                        <div>
+                                                            <span class="green-text display-6"><i class="ti-bar-chart-alt"></i></span>
+                                                        </div>
+                                                        <div>
+                                                            <h4>{{$signature_signed}}</h4>
+                                                            <h4 class="">Documentos Assinados</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="{{route('search')}}" class="col l4 m4 s12">
                                                 <div class="card" style="box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);">
                                                     <div class="card-content center-align">
                                                         <div>
                                                             <span class="blue-text display-6"><i class="fas fa-folder-open"></i></span>
                                                         </div>
                                                         <div>
-                                                        <h4 style="color: transparent!important"></h4>
+                                                        <h4 style="color: transparent!important">-</h4>
                                                             <h4>Cadastrar Assinatura</h4>
 
                                                         </div>

@@ -68,7 +68,7 @@ Home -
                                                                                         <th>Email Aluno</th>
                                                                                         <th>Nome Atendente</th>
                                                                                         <th>Email Atendente</th>
-                                                                                        <th>Data da criacao</th>
+                                                                                        <th>Data da assinatura</th>
                                                                                     </tr>
                                                                                 </thead>
                                                                                 <tbody>
@@ -78,7 +78,7 @@ Home -
                                                                                         <td class="blue-grey-text  text-darken-4 font-medium">{{$log->student_email}}</td>
                                                                                         <td class="blue-grey-text  text-darken-4 font-medium">{{$log->user->name}}</td>
                                                                                         <td class="blue-grey-text  text-darken-4 font-medium">{{$log->user->email}}</td>
-                                                                                        <td class="blue-grey-text  text-darken-4 font-medium">{{$log->created_at->format('d-m-Y')}}</td>
+                                                                                        <td class="blue-grey-text  text-darken-4 font-medium">{{$log->created_at->format('d/ m/ Y, H: i: s');}}</td>
                                                                                     </tr>
                                                                                 @endforeach
                                                                                 </tbody>
